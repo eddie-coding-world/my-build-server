@@ -1,0 +1,25 @@
+1. Build Server ¥»¾÷­n¦w¸Ë Git. ¦w¸Ë§¹ Git «á, ¶}±Ò©R¥O¦Cµøµ¡ (cmd.exe), ¿é¤J¥H¤U«ü¥O
+   
+   git config --global http.sslVerify false 
+
+2. ¦w¸Ë Virtual Box. ¦w¸Ë§¹²¦«á, ¥´¶} BuildServer\Configs\Settings.conf, ±N VBoxManage.exe ªº¦ì¸m«ü©wµ¹ VIRTUAL_BOX_EXE_PATH ÅÜ¼Æ
+
+    [Program Settings]
+    #The virtual box manager executive file path 
+    VIRTUAL_BOX_EXE_PATH=C:\Program Files\Oracle\VirtualBox\VBoxManage.exe
+
+3. ¸Ì­±¦³¨Ç Web server ªº³]©w¸ò build ¥X¨Óªº zip file ©Î ota zip file ªº servre µ´¹ï¸ô®|¦³Ãö, ¦]¦¹ BuildServer ªºµ´¹ï¸ô®|­n³]¦b G ¼Ñ
+
+4. ota zip ÀÉ®×¸ò built out files ¬O©ñ¦b G:\BuildServer\HostShared\{Project Name} ¸ê®Æ§¨, user ¥i¥H±q ningx.conf ªº³]©w¤¤, ±q web browser
+    ¦s¨úªº¨ì
+
+5. ¦pªG git server ªº IP ÅÜ¤F, Settings.conf ¸Ì­±¨C­Ó project ªº git url ¤]­n¸òµÛ§ï
+
+6. ¨C­Ó¬P´Á¤G±ß¤W 7:00 ¸ò¬P´Á¤­±ß¤W 7:00, Windows ¤u§@±Æµ{·|°õ¦æ
+    G:\BuildServer\BuildHelper\BuildHelper\bin\Debug\BuildHelper.exe þ¨Ó build code
+
+   ³]©w¤è¦¡ ¶}±Ò [¹q¸£ºÞ²z] -> ¿ï¾Ü¥ª¦C [¤u§@±Æµ{¾¹] 
+
+7. ¦³¨Ç³]­pªº·§©À¥i¥H¬Ý Documents ¸ê®Æ§¨
+
+8. ¦³Ãö©ó Ngnix ªº config ³]©wÀÉ¦b Nginx\conf\nginx.conf 
