@@ -1,0 +1,20 @@
+
+
+ikrisSAcRRfTPKvmsNvG 是  user buildserver 的 Private private_token
+buildserver 現在是 admin
+
+1. 列出所有 project, 找出 project 的 ID, (MH6140:61)
+https://os-gits/api/v3/projects?private_token=ikrisSAcRRfTPKvmsNvG
+
+2. 先用 project ID number 找到隸屬該 project 的成員
+https://os-gits/api/v3/projects/61/members?private_token=ikrisSAcRRfTPKvmsNvG
+https://os-gits/api/v3/groups/43/members?private_token=ikrisSAcRRfTPKvmsNvG
+
+
+3. 列出所有成員的資訊, 裡面有 email
+https://os-gits/api/v3/users?private_token=ikrisSAcRRfTPKvmsNvG
+
+4. 再用 member id 去比對, 找到該 member 的 email
+
+
+

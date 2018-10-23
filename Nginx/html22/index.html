@@ -1,0 +1,241 @@
+
+  
+<html>  
+  <head>  
+    <meta charset="utf-8">  
+    <title>OS Team Build Server Report</title>  
+    <link rel="stylesheet" href="css/screen.css" media="screen" />  
+    <link rel="stylesheet" href="css/jquery.treetable.css" />  
+    <link rel="stylesheet" href="css/jquery.treetable.theme.default.css" />  
+    <style type="text/css">  
+        table{  table-layout: fixed;}  
+        table.treetable thead tr th,table.treetable tbody tr td{padding:10px 1em;}  
+        table.treetable tbody tr td{border-top:1px solid #ccc;}  
+        table tr:hover{background:#F7F6A5 !important;}  
+        table td{ 
+            max-width:500px; 
+            word-wrap:
+            break-word; 
+            text-overflow:ellipsis; 
+            white-space:nowrap; 
+            overflow:hidden; 
+        }
+        table td:hover{ 
+            white-space:normal; 
+            overflow:auto;
+        }
+
+        table td a.del{color:#f00;}  
+        table td a.add{color:green;} 
+
+        #search_input {  
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            width: 40%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+        }
+    
+    .highlight{background-color:lightblue;padding-left:0px;}
+    
+	
+    </style>  
+
+  </head>  
+  <body>  
+    <div id="main">  
+      <h1>OS Team Build Server Report</h1>  
+    
+    <input type="text" id="search_input" class="search" placeholder="Search for a text" title="Type in a name">
+    
+        
+      <table id="commit_table">  
+
+        <thead>  
+          <tr>  
+            <th>Commit Number</th>  
+            <th>Author</th>  
+            <th>Date</th>  
+            <th>Comment</th>
+            <th>Build Result</th>
+          </tr>  
+        </thead>  
+        <tbody>  
+ 
+          <tr data-node-id="2">  
+            <td><span class='file'></span></td>  
+            <td></td>  
+            <td></td>  
+            <td></td>
+            <td></td>
+          </tr>  
+        </tbody>  
+      </table>  
+
+      <table id="test_table">  
+
+        <thead>  
+          <tr>  
+            <th>Commit Number</th>  
+            <th>Author</th>  
+            <th>Date</th>  
+            <th>Comment</th>
+            <th>Build Result</th>
+          </tr>  
+        </thead>  
+        <tbody>  
+ 
+          <tr>  
+            <td>csdfd</td>  
+            <td>safds</td>  
+            <td>fasfds</td>  
+            <td>fdsaf</td>
+            <td>fdsfds</td>
+          </tr>  
+        </tbody>  
+      </table>  
+
+    </div>  
+    <script src="js/jquery.js"></script>  
+    <script src="js/jquery.highlight.js"></script>      
+    <script src="js/jquery.treetable.js"></script>  
+    <script type="text/javascript">  
+      
+        var counter = 100;  
+        var jsonString;
+
+        function loadHtml(id, data){  
+
+            data = '[' + data + ']';
+            var str = '';
+            var parent_id = id;
+
+            var root_id = id;
+            var project_id = id;
+            var display_count = 3;
+            var display_index = 0;
+
+            var branch_id;
+            var commit_id;
+            var next_id = id;
+
+            $.each($.parseJSON(data), function(name, project){  
+
+                $.each(project, function(key, value){
+                                       
+                    if (key == "project_name")
+                    {
+                       project_id = (++next_id);
+                       str += '<tr data-parent-id="' + root_id + '" data-node-id="' + project_id + '">' + 
+                       '<td>' + value + '</td>' +
+                       '<td></td>' +
+                       '<td></td>' +
+                       '<td></td>' +
+                       '<td></td>' +
+                       '</tr>';
+                    }
+                    if (key == "master" || key == "tags") {
+                        branch_id = (++next_id);
+                        str += '<tr data-parent-id="' + project_id + '" data-node-id="' + branch_id + '">' + 
+                               '<td>' + key + '</td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '</tr>';
+
+                        display_index = 0;
+                        $.each(value, function(key, value){
+
+                            var buildResult = "";
+                            if (display_index++ < display_count)
+                            {
+                                commit_id = (++next_id);
+
+                                if (value.buildResult != null)
+                                    buildResult = value.buildResult;
+
+                                str += '<tr data-parent-id="' + branch_id + '" data-node-id="' + commit_id + '">' + 
+                                    '<td>' + value.commitNumber + '</td>' +
+                                    '<td>' + value.author + '</td>' +
+                                    '<td>' + value.date + '</td>' +
+                                    '<td>' + value.comment + '</td>' +
+                                    '<td>' + buildResult + '</td>' +
+                                    '</tr>';
+                            }
+                        });
+                    }
+                });
+ 
+                //alert(project.master[0].commit);
+            }); 
+          
+            return str;  
+        }  
+
+        var $rows
+
+        $('.search').keyup(function() {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+            $rows.show().filter(function() {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();                                              
+                return !~text.indexOf(val);
+            }).hide();
+            
+            
+            $('#test_table').unhighlight();  
+            
+            $('#test_table').highlight(val); 
+            
+        });
+
+ 
+        $(function(){  
+
+            $("#commit_table").treetable({  
+                nodeIdAttr: "nodeId",  
+                parentIdAttr: "parentId",  
+                stringCollapse: "收起",  
+                stringExpand: "展开",  
+                expandable: true,  
+                  
+                //展开  
+                /*
+                onNodeExpand: function(){  
+                    var node = this;  
+                    //是否已经加载  
+                    if(node.children && !node.children.length ){  
+                        var html = loadHtml(node.id);  
+            
+                        $("#commit_table").treetable("loadBranch",node,html);    
+                    }  
+                      
+                }  */
+            }).on("click",".del",function(e){  
+                e.preventDefault();  
+                var id = $(this).closest("tr").data("node-id");               
+                $("#commit_table").treetable("removeNode",id);  
+            }).on("click",".add",function(e){  
+                e.preventDefault();  
+                var id = $(this).closest("tr").data("node-id");  
+                var html = loadHtml(id, "");  
+                var node = $("#commit_table").treetable("node",id);  
+  
+                $("#commit_table").treetable("loadBranch",node,html);                    
+            });  
+            
+            $.get('../GitRepoInfo.json', function(jsonStr) {
+
+                var html = loadHtml(2, jsonStr);  
+                var node = $("#commit_table").treetable("node",2);  
+  
+                $("#commit_table").treetable("loadBranch",node,html);  
+                $rows = $('#commit_table tbody tr');
+                $('.search').focus();
+            }, 'text');
+        })  
+    </script>  
+  </body>  
+</html>  

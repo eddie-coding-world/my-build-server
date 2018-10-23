@@ -1,0 +1,388 @@
+
+  
+<html>  
+  <head>  
+    <meta charset="utf-8">  
+    <title>OS Team Build Server Report</title>  
+    <link rel="stylesheet" href="css/screen.css" media="screen" />  
+    <link rel="stylesheet" href="css/jquery.treetable.css" />  
+    <link rel="stylesheet" href="css/jquery.treetable.theme.default.css" />  
+    <style type="text/css">  
+        table{  table-layout: fixed;}  
+        table.treetable thead tr th,table.treetable tbody tr td{padding:10px 1em;}  
+        table.treetable tbody tr td{border-top:1px solid #ccc;}  
+        table tr:hover{background:#F7F6A5 !important;}  
+        table td{ 
+            max-width:500px; 
+            word-wrap:break-word;
+            
+             
+        }
+
+        .tdWrapContent {
+            text-overflow:ellipsis; 
+            white-space:nowrap; 
+            overflow:hidden;
+        }
+
+
+        .log_content{
+            height:100%; 
+            width:100%; 
+            background-color:#abc; 
+            position:relative;
+            overflow-wrap: break-word;
+        }
+        
+
+        table td a.del{color:#f00;}  
+        table td a.add{color:green;} 
+
+        #commit_table img{
+            display:inline-block; 
+            width:20px;
+            height:20px;        
+            vertical-align: middle;
+        }
+
+        #search_input {  
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            width: 40%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+        }
+    
+    .highlight{background-color:lightblue;padding-left:0px;}
+    
+    </style>  
+
+  </head>  
+  <body>  
+    <div id="main">  
+      <h1>OS Team Build Server Report</h1>  
+    
+    <input type="text" id="search_input" class="search" placeholder="Search for a text" title="Type in a name">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Double click the comment field to view the detail.        
+      <table id="commit_table" class="hoverRow">  
+
+        <thead>  
+          <tr>  
+            <th width='15%'>Commit Number</th>  
+            <th width='15%'>Author</th>  
+            <th width='15%'>Date</th>  
+            <th width='25%'>Comment</th>
+            <th width='10%'>Result</th>
+            <th width='20%'>Download</th>            
+          </tr>  
+        </thead>  
+        <tbody>  
+ 
+          <tr data-node-id="2">  
+            <td><span class='file'></span></td>  
+            <td></td>  
+            <td></td>  
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>  
+        </tbody>  
+      </table>  
+    </div>  
+    <script src="js/jquery.js"></script>  
+    <script src="js/jquery.highlight.js"></script>      
+    <script src="js/jquery.treetable.js"></script>  
+    <script type="text/javascript">  
+      
+        var counter = 100;  
+        var jsonString;
+        var cc;
+
+        function getDatetimeAgo(dateTimeString)
+        {
+            var minute = 1000 * 60;
+            var hour = minute * 60;
+            var day = hour * 24;
+            var halfamonth = day * 15;
+            var month = day * 30;
+            var monthC;
+            var weekC;
+            var dayC;
+            var hourC;
+            var minC;            
+            var now = new Date().getTime();
+            var dateTimeAgo = Date.parse(dateTimeString);
+
+            diffValue = now - dateTimeAgo;
+            if (diffValue < 0) {
+                //Error handling
+            }
+            monthC = diffValue / month;
+            weekC = diffValue / (7*day);
+            dayC = diffValue / day;
+            hourC = diffValue / hour;
+            minC = diffValue / minute;
+
+            if (monthC >= 1) {
+                result = parseInt(monthC) + " month ago";
+            }
+            else if (weekC >= 1) {
+                result = parseInt(weekC) + " week(s) ago";
+            }
+            else if (dayC >= 1) {
+                result = parseInt(dayC) +" day(s) ago";
+            }
+            else if (hourC >= 1) {
+                result= parseInt(hourC) +" hour(s) ago";
+            }
+            else if (minC >= 1) {
+                result = parseInt(minC) +" minute(s) ago";
+            } 
+            else
+                result = "A few seconds ago";
+            
+            return result;
+        }
+
+        function loadHtml(id, data){  
+
+            data = '[' + data + ']';
+            var str = '';
+            var parent_id = id;
+
+            var root_id = id;
+            var project_id = id;
+            var display_count = 3;
+            var display_index = 0;
+
+            var branch_id;
+            var commit_id;
+            var next_id = id;
+            var comment;
+            var commentLineList;
+            var firstCommentLineIndex;
+            var firstCommentLine;
+            var restComments;
+            var buildResultImageSource;
+            var downloadFileImageSource;
+            var downloadFilePath;
+            var buildResultTdContent;
+            var downloadFileTdContent;
+            var projectName;
+
+            $.each($.parseJSON(data), function(name, project){  
+
+                $.each(project, function(key, value){
+                                       
+                    if (key == "project_name")
+                    {
+                       project_id = (++next_id);
+                       str += '<tr data-parent-id="' + root_id + '" data-node-id="' + project_id + '">' + 
+                       '<td><b>' + value + '</b></td>' +
+                       '<td></td>' +
+                       '<td></td>' +
+                       '<td></td>' +
+                       '<td></td>' +
+                       '<td></td>' +
+                       '</tr>';
+                       projectName = value;
+                    }
+                    if (key == "master" || key == "tags") {
+                        branch_id = (++next_id);
+                        str += '<tr data-parent-id="' + project_id + '" data-node-id="' + branch_id + '">' + 
+                               '<td>' + key + '</td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '<td></td>' +
+                               '</tr>';
+
+                        display_index = 0;
+                        $.each(value, function(key, value){
+
+                            var buildResult = "";
+                            buildResultTdContent = "";
+                            downloadFileTdContent = "";
+                            if (display_index++ < display_count)
+                            {
+                                commit_id = (++next_id);
+
+                                if (value.buildResult != null)
+                                    buildResult = value.buildResult;
+                                                                
+                                if (buildResult.trim() == "Build successfully")
+                                {
+                                    downloadFileImageSource = "./pics/ZipFile.png";
+                                    downloadFilePath = "/built_up_packages/" + projectName + "/" + value.buildSessionId + ".zip";
+                                    buildResultTdContent = '<img src="./pics/BuildSuccess.png"/>';
+                                    downloadFileTdContent = '<a href="' + downloadFilePath + '"><img src="' + downloadFileImageSource + '"/></a>';                                    
+                                }
+                                else if (buildResult.trim() == "Build failed")
+                                {
+                                    downloadFileImageSource = "./pics/TextFile.png";                                    
+                                    downloadFilePath = "/built_up_packages/" + value.projectName + "/" + value.buildSessionId;
+                                    buildResultTdContent = '<img src="./pics/BuildError.png/>';
+                                    downloadFileTdContent = '<a href="' + downloadFilePath + '"><img src="' + downloadFileImageSource + '"/></a>';
+                                }
+ 
+                                commentLineList = value.comment.split("<br>");
+                                firstCommentLineIndex = 0;
+                                firstCommentLine = "";
+                                restComments = "";
+                                
+                                if (commentLineList != null)
+                                {
+                                    for (var index = 0; index < commentLineList.length; ++index)
+                                    {
+                                        if (commentLineList[index].trim())
+                                        {
+                                            firstCommentLine = commentLineList[index];
+                                            firstCommentLineIndex = index;
+                                            break;
+                                        }
+                                    }
+
+                                    for (var index = firstCommentLineIndex + 1 ; index < commentLineList.length; ++index)
+                                    {
+                                        restComments += commentLineList[index] + "<br>";
+                                    }
+                                }
+                                
+                                
+                                str += '<tr data-parent-id="' + branch_id + '" data-node-id="' + commit_id + '">' + 
+                                    '<td>' + value.commitNumber + '</td>' +
+                                    '<td>' + value.author + '</td>' +
+                                    '<td>' + getDatetimeAgo(value.date) + '</td>' +
+                                    //'<td>click<div class="log_content" style="display: none ;">' + value.comment + '</div></td>' +                                    
+                                    '<td class="tdWrapContent">' + firstCommentLine + '<p style="display: none ;">' + restComments + '</p></td>' +
+                                    '<td align="center">' + buildResultTdContent + '</td>' +                                    
+                                    '<td align="center">' + downloadFileTdContent + '</td>' +
+                                    '</tr>';
+                            }
+                        });
+                    }
+                });
+ 
+                //alert(project.master[0].commit);
+            }); 
+          
+            return str;  
+        }  
+
+        var $rows
+        var thisTd;        
+        var hiddenContent;
+        var commitComment;
+        var isMatchPartOfComment;
+
+        $('.search').keyup(function() {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();            
+
+            $('#commit_table').unhighlight();              
+
+            $rows.show().filter(function() {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                                
+                thisTd = $(this).find("td[class='tdWrapContent']");
+                hiddenContent = thisTd.children("p");
+                commitComment = hiddenContent.text().replace(/\s+/g, ' ').toLowerCase();
+                isMatchPartOfComment = (commitComment.indexOf(val) >= 0);
+                if (!val)
+                    isMatchPartOfComment = false;
+
+                if (isMatchPartOfComment)    
+                {
+                    if (hiddenContent.is(":hidden"))                                
+                    {
+                        hiddenContent.slideDown("fast", function(){
+                            thisTd.removeClass("tdWrapContent");                    
+                        });
+                    }
+                }
+                else
+                {
+                    if (!hiddenContent.is(":hidden"))                    
+                    {
+                        hiddenContent.slideUp("fast", function(){
+                            thisTd.addClass("tdWrapContent");                    
+                        });
+                    }
+                }                
+                /*
+                if (hiddenContent.is(":hidden"))
+                {
+                    if (isMatchPartOfComment)    
+                    {
+                        hiddenContent.slideDown("fast", function(){
+                            thisTd.removeClass("tdWrapContent");                    
+                        });
+                    }
+                }
+                else
+                {
+                    if (!isMatchPartOfComment)    
+                    {
+                        hiddenContent.slideUp("fast", function(){
+                            thisTd.addClass("tdWrapContent");                    
+                        });
+                    }
+                }
+                 */
+                            
+                return !~text.indexOf(val);
+            }).hide();
+                        
+            
+            $('#commit_table').highlight(val);             
+        });
+
+ 
+        $(function(){  
+            $("#commit_table").treetable({  
+                nodeIdAttr: "nodeId",  
+                parentIdAttr: "parentId",  
+                expandable: true,                                    
+            });  
+                          
+            $.get('./BuildResultJsonFiles/ProjectBuildResults.json', function(jsonStr) {            
+                var html = loadHtml(2, jsonStr);  
+                var node = $("#commit_table").treetable("node",2);  
+  
+                $("#commit_table").treetable("loadBranch",node,html);  
+                $rows = $('#commit_table tbody tr');
+                $('.search').focus();
+            }, 'text');
+
+            $("#commit_table").on("dblclick", "td", function() {
+                
+                thisTd = $(this);
+                hiddenContent = $(this).children("p");
+                hiddenContent.slideToggle("fast", function(){
+                    
+                    if ($(this).is( ":hidden" ))
+                        thisTd.addClass("tdWrapContent");
+                    else 
+                        thisTd.removeClass("tdWrapContent");
+                    
+                }); 
+                /*
+                if (hiddenContent.is( ":hidden" ))
+                {
+                    alert('ccc');
+                    //hiddenContent.addClass("tdWrapContent");                    
+                    $(this).removeClass("tdWrapContent");                       
+                }
+                else
+                    $(this).addClass("tdWrapContent");
+                */  
+                    
+
+                
+            });
+        })
+    </script>  
+  </body>  
+</html>  

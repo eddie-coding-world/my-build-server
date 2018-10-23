@@ -1,0 +1,65 @@
+[2018/10/22 17:24:12] BuildHelper get started
+[2018/10/22 17:24:12] Stopped all running VMs
+[2018/10/22 17:24:12] ================== Start working Project MH6140 ==================
+[2018/10/22 17:24:12] Checking the project working folder(G:\BuildServer\HostShared\MH6140) existence
+[2018/10/22 17:24:12] Checked the project working folder(G:\BuildServer\HostShared\MH6140) - OK!
+[2018/10/22 17:24:13] VM's CPU count = 4
+[2018/10/22 17:24:13] VM's RAM size in MB = 20000
+[2018/10/22 17:24:13] Mounted G:\BuildServer\HostShared as the shared folder
+[2018/10/22 17:24:13] Project MH6140 : Found one new commit. Start building process...
+[2018/10/22 17:24:17] VM : IMX6_Android_7_1 gets started
+[2018/10/22 17:24:38] [20181022 17:24:36] Start build.script
+[2018/10/22 17:24:44] Start git update code procedure...
+[2018/10/22 20:39:07] Finish git update code procedure...(exit code=0)
+[2018/10/22 20:39:20] Start build code procedure...
+[2018/10/22 21:31:34] Finish build code procedure...(exit code=0)
+[2018/10/22 21:31:45] Start package files procedure...
+[2018/10/22 21:32:54] Finish package files procedure...(exit code=1)
+[2018/10/22 21:32:59] Finish build.script
+[2018/10/22 21:33:05] VM : Shut down all running VMs
+[2018/10/22 21:33:10] Project MH6140 master branch build code -> Success!
+[2018/10/22 21:33:28] Successfully sent the email
+[2018/10/22 21:33:28] Creating json-formatted build string for MH6140...
+[2018/10/22 21:33:28] Finished json-formatted build string for MH6140...
+[2018/10/22 21:33:28] ================== Finish working Project MH6140 ==================
+[2018/10/22 21:33:28] ================== Start working Project PB3211 ==================
+[2018/10/22 21:33:28] Checking the project working folder(G:\BuildServer\HostShared\PB3211) existence
+[2018/10/22 21:33:28] Checked the project working folder(G:\BuildServer\HostShared\PB3211) - OK!
+[2018/10/22 21:33:29] VM's CPU count = 4
+[2018/10/22 21:33:30] VM's RAM size in MB = 20000
+[2018/10/22 21:33:30] Mounted G:\BuildServer\HostShared as the shared folder
+[2018/10/22 21:33:30] Project PB3211 : No new commit to build
+[2018/10/22 21:33:30] Creating json-formatted build string for PB3211...
+[2018/10/22 21:33:30] Finished json-formatted build string for PB3211...
+[2018/10/22 21:33:30] ================== Finish working Project PB3211 ==================
+[2018/10/22 21:33:30] ================== Start working Project MH5106 ==================
+[2018/10/22 21:33:30] Checking the project working folder(G:\BuildServer\HostShared\MH5106) existence
+[2018/10/22 21:33:30] Checked the project working folder(G:\BuildServer\HostShared\MH5106) - OK!
+[2018/10/22 21:33:30] VM's CPU count = 4
+[2018/10/22 21:33:30] VM's RAM size in MB = 20000
+[2018/10/22 21:33:30] Mounted G:\BuildServer\HostShared as the shared folder
+[2018/10/22 21:33:30] Project MH5106 : No new commit to build
+[2018/10/22 21:33:30] Creating json-formatted build string for MH5106...
+[2018/10/22 21:33:30] Finished json-formatted build string for MH5106...
+[2018/10/22 21:33:30] ================== Finish working Project MH5106 ==================
+[2018/10/22 21:33:30] ================== Start working Project MP4910 ==================
+[2018/10/22 21:33:30] Checking the project working folder(G:\BuildServer\HostShared\MP4910) existence
+[2018/10/22 21:33:30] Checked the project working folder(G:\BuildServer\HostShared\MP4910) - OK!
+[2018/10/22 21:33:31] VM's CPU count = 4
+[2018/10/22 21:33:31] VM's RAM size in MB = 20000
+[2018/10/22 21:33:31] Mounted G:\BuildServer\HostShared as the shared folder
+[2018/10/22 21:33:31] Project MP4910 : No new commit to build
+[2018/10/22 21:33:31] Creating json-formatted build string for MP4910...
+[2018/10/22 21:33:31] Finished json-formatted build string for MP4910...
+[2018/10/22 21:33:31] ================== Finish working Project MP4910 ==================
+[2018/10/22 21:33:31] ================== Start working Project MH5108 ==================
+[2018/10/22 21:33:31] Checking the project working folder(G:\BuildServer\HostShared\MH5108) existence
+[2018/10/22 21:33:31] Checked the project working folder(G:\BuildServer\HostShared\MH5108) - OK!
+[2018/10/22 21:33:32] VM's CPU count = 4
+[2018/10/22 21:33:32] VM's RAM size in MB = 20000
+[2018/10/22 21:33:32] Mounted G:\BuildServer\HostShared as the shared folder
+[2018/10/22 21:33:32] Project MH5108 : No new commit to build
+[2018/10/22 21:33:32] Creating json-formatted build string for MH5108...
+[2018/10/22 21:33:32] Finished json-formatted build string for MH5108...
+[2018/10/22 21:33:32] ================== Finish working Project MH5108 ==================
+[2018/10/22 21:33:32] BuildHelper says, "Let's call it day!"
