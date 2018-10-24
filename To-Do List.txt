@@ -1,0 +1,1 @@
+1. Enable SSL in the nginx sever.
