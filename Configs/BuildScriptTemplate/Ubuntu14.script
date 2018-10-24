@@ -103,7 +103,7 @@ then
     BUILD_SESSION_ID=$BUILD_BRANCH
 else
     LASTEST_COMMIT_NUMBER=`git rev-parse HEAD | head -c 8`
-    BUILD_SESSION_ID=$BUILD_TRUNK-$LASTEST_COMMIT_NUMBER-`date +"%Y%m%d"`
+    BUILD_SESSION_ID=$BUILD_TRUNK-commit-$LASTEST_COMMIT_NUMBER-build-`date +"%Y%m%d"`
 fi
 
 echo $BUILD_SESSION_ID > $BUILD_LOG_FILE_PATH
@@ -172,10 +172,10 @@ fi
 
 sleep $TASKS_INTERVAL_SECONDS
 
-#if [ -f $PACKAGE_ZIP_FILE ]
-#then
-#    cp $PACKAGE_ZIP_FILE $HOST_SHARE_DIR
-#fi
+if [ -f $PACKAGE_ZIP_FILE ]
+then
+    cp $PACKAGE_ZIP_FILE $HOST_SHARE_DIR
+fi
 
 if [ "$BUILD_BRANCH" != "$BUILD_TRUNK" ]
 then    
